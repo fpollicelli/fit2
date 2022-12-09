@@ -42,8 +42,9 @@ from PyQt5.QtGui import *
 import sys
 from view.wizard import WizardView
 from view.web import WebView
+from view.insta import InstaView
+from view.fb import FbView
 from view.verifysignature import VerifySignatureView
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -51,23 +52,32 @@ if __name__ == '__main__':
     wizard.init_wizard()
     web = WebView()
     web.hide()
+    insta = InstaView()
+    insta.hide()
+    fb = FbView()
+    fb.hide()
     verify_signature = VerifySignatureView()
     verify_signature.hide()
-    
+
+
     def start_task(task, case_id):
+
         if (task == 'web'):
             acquisition_window = web
         elif (task == 'mail'):
             pass
+        elif (task == 'insta'):
+            acquisition_window = insta
         elif (task == 'fb'):
-            pass
+            acquisition_window = fb
         elif (task == 'verify_signature'):
             acquisition_window = verify_signature
 
         acquisition_window.init(case_id)
         acquisition_window.show()
 
-    #Wizard sends a signal when finish button is clicked and case is stored on the DB
+
+    # Wizard sends a signal when finish button is clicked and case is stored on the DB
     wizard.finished.connect(lambda task, case_id: start_task(task, case_id))
 
     wizard.show()

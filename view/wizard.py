@@ -36,8 +36,6 @@
 # ----------	---	----------------------------------------------------------
 ###### 
 
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import sys
@@ -50,6 +48,7 @@ from controller.case import CaseController
 
 from common.error import ErrorMessage
 
+
 class CaseInfoPage(QtWidgets.QWizardPage):
     def __init__(self, parent=None):
         super(CaseInfoPage, self).__init__(parent)
@@ -58,15 +57,15 @@ class CaseInfoPage(QtWidgets.QWizardPage):
         self.case_info = {}
 
         self.error_msg = ErrorMessage()
-        #Get all cases names present on the DB
+        # Get all cases names present on the DB
         try:
-           self.case_controller = CaseController()
+            self.case_controller = CaseController()
         except Exception as error:
             error_dlg = ErrorView(QtWidgets.QMessageBox.Warning,
-                            self.error_msg.TITLES['form'],
-                            self.error_msg.MESSAGES['get_case_info'],
-                            str(error)
-                            )
+                                  self.error_msg.TITLES['form'],
+                                  self.error_msg.MESSAGES['get_case_info'],
+                                  str(error)
+                                  )
 
             error_dlg.buttonClicked.connect(self.close)
             error_dlg.exec_()
@@ -80,36 +79,36 @@ class CaseInfoPage(QtWidgets.QWizardPage):
         self.form = CaseFormView(self.case_form_widget)
         self.form.setGeometry(QtCore.QRect(0, 0, 400, 200))
 
-        x = (self.case_form_widget.frameGeometry().width()/2) - (self.form.frameGeometry().width()/2) -20
-        y = (self.case_form_widget.frameGeometry().height()/2) - (self.form.frameGeometry().height()/2)
+        x = (self.case_form_widget.frameGeometry().width() / 2) - (self.form.frameGeometry().width() / 2) - 20
+        y = (self.case_form_widget.frameGeometry().height() / 2) - (self.form.frameGeometry().height() / 2)
         self.form.move(x, y)
 
-        #This allow to edit every row on combox
+        # This allow to edit every row on combox
         self.form.name.setEditable(True)
         self.form.name.setCurrentIndex(-1)
         self.form.name.currentTextChanged.connect(self.completeChanged)
         self.form.case_form_layout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.form.name)
-           
+
     def isComplete(self):
         if self.form.name.currentText() in self.case_names_list:
             self.set_case_information(self.form.name.currentText())
         else:
             self.clear_case_information()
         return self.form.name.currentText() != ""
-    
+
     def set_case_information(self, name):
         self.case_info = self.case_controller.get_case_from_name(name)
         self.form.lawyer_name.setText(self.case_info['lawyer_name'])
-        self.form.proceedings_type.setCurrentIndex(self.form.proceedings_type.findText(self.case_info['proceedings_type']))
+        self.form.proceedings_type.setCurrentIndex(
+            self.form.proceedings_type.findText(self.case_info['proceedings_type']))
         self.form.courthouse.setText(self.case_info['courthouse'])
         self.form.proceedings_number.setText(str(self.case_info['proceedings_number']))
-    
+
     def clear_case_information(self):
         self.form.lawyer_name.setText(None)
         self.form.proceedings_type.setCurrentIndex(-1)
         self.form.courthouse.setText(None)
         self.form.proceedings_number.setText(None)
-    
 
 
 class SelectTaskPage(QtWidgets.QWizardPage):
@@ -128,10 +127,10 @@ class SelectTaskPage(QtWidgets.QWizardPage):
         self.radio_buttons_hlayout.setContentsMargins(0, 0, 0, 0)
         self.radio_buttons_hlayout.setObjectName("radio_buttons_hlayout")
 
-        
-        #RADIO BUTTON WEB
+        # RADIO BUTTON WEB
         self.web_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
-        self.web_radio_button_wrapper.setStyleSheet("QWidget#web_radio_button_wrapper {\n""border: 1px solid black;\n""}")
+        self.web_radio_button_wrapper.setStyleSheet(
+            "QWidget#web_radio_button_wrapper {\n""border: 1px solid black;\n""}")
         self.web_radio_button_wrapper.setObjectName("web_radio_button_wrapper")
         self.web_vlayout = QtWidgets.QVBoxLayout(self.web_radio_button_wrapper)
         self.web_vlayout.setContentsMargins(5, 5, 5, 5)
@@ -147,9 +146,10 @@ class SelectTaskPage(QtWidgets.QWizardPage):
         self.radio_buttons_hlayout.addWidget(self.web_radio_button_wrapper)
         self.radio_button_group.addButton(self.web, 0)
 
-        #RADIO BUTTON MAIL
+        # RADIO BUTTON MAIL
         self.mail_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
-        self.mail_radio_button_wrapper.setStyleSheet("QWidget#mail_radio_button_wrapper {\n""border: 1px solid #c3c3c3;\n""}")
+        self.mail_radio_button_wrapper.setStyleSheet(
+            "QWidget#mail_radio_button_wrapper {\n""border: 1px solid #c3c3c3;\n""}")
         self.mail_radio_button_wrapper.setObjectName("mail_radio_button_wrapper")
         self.mail_vlayout = QtWidgets.QVBoxLayout(self.mail_radio_button_wrapper)
         self.mail_vlayout.setContentsMargins(5, 5, 5, 5)
@@ -166,30 +166,49 @@ class SelectTaskPage(QtWidgets.QWizardPage):
         self.mail_vlayout.addWidget(self.mail)
         self.radio_buttons_hlayout.addWidget(self.mail_radio_button_wrapper)
         self.radio_button_group.addButton(self.mail, 1)
-        
-        #RADIO BUTTON FACEBOOK
+
+        # RADIO BUTTON INSTAGRAM
+        self.insta_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
+        self.insta_radio_button_wrapper.setStyleSheet(
+            "QWidget#insta_radio_button_wrapper {\n""border: 1px solid #c3c3c3;\n""}")
+        self.insta_radio_button_wrapper.setObjectName("insta_radio_button_wrapper")
+        self.insta_vlayout = QtWidgets.QVBoxLayout(self.insta_radio_button_wrapper)
+        self.insta_vlayout.setContentsMargins(5, 5, 5, 5)
+        self.insta_vlayout.setObjectName("insta_vlayout")
+        self.insta_img = QtWidgets.QLabel(self.insta_radio_button_wrapper)
+        self.insta_img.setStyleSheet("image: url(asset/images/wizard/insta.png);")
+        self.insta_img.setText("")
+        self.insta_img.setObjectName("insta_img")
+        self.insta_vlayout.addWidget(self.insta_img)
+        self.insta = QtWidgets.QRadioButton(self.insta_radio_button_wrapper)
+        self.insta.setObjectName("insta")
+        self.insta_vlayout.addWidget(self.insta)
+        self.radio_buttons_hlayout.addWidget(self.insta_radio_button_wrapper)
+        self.radio_button_group.addButton(self.insta, 2)
+
+        # RADIO BUTTON FACEBOOK
         self.fb_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
-        self.fb_radio_button_wrapper.setStyleSheet("QWidget#fb_radio_button_wrapper {\n""border: 1px solid #c3c3c3;\n""}")
+        self.fb_radio_button_wrapper.setStyleSheet(
+            "QWidget#fb_radio_button_wrapper {\n""border: 1px solid #c3c3c3;\n""}")
         self.fb_radio_button_wrapper.setObjectName("fb_radio_button_wrapper")
         self.fb_vlayout = QtWidgets.QVBoxLayout(self.fb_radio_button_wrapper)
         self.fb_vlayout.setContentsMargins(5, 5, 5, 5)
         self.fb_vlayout.setObjectName("fb_vlayout")
         self.fb_img = QtWidgets.QLabel(self.fb_radio_button_wrapper)
-        self.fb_img.setEnabled(False)
-        self.fb_img.setStyleSheet("image: url(asset/images/wizard/fb-disabled.png);")
+        self.fb_img.setStyleSheet("image: url(asset/images/wizard/fb.png);")
         self.fb_img.setText("")
         self.fb_img.setObjectName("fb_img")
         self.fb_vlayout.addWidget(self.fb_img)
         self.fb = QtWidgets.QRadioButton(self.fb_radio_button_wrapper)
-        self.fb.setEnabled(False)
         self.fb.setObjectName("fb")
         self.fb_vlayout.addWidget(self.fb)
         self.radio_buttons_hlayout.addWidget(self.fb_radio_button_wrapper)
-        self.radio_button_group.addButton(self.fb, 2)
+        self.radio_button_group.addButton(self.fb, 3)
 
-        #RADIO BUTTON CHECK SIGNATURE
+        # RADIO BUTTON CHECK SIGNATURE
         self.verify_signature_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
-        self.verify_signature_radio_button_wrapper.setStyleSheet("QWidget#verify_signature_radio_button_wrapper {\n""border: 1px solid black;\n""}")
+        self.verify_signature_radio_button_wrapper.setStyleSheet(
+            "QWidget#verify_signature_radio_button_wrapper {\n""border: 1px solid black;\n""}")
         self.verify_signature_radio_button_wrapper.setObjectName("verify_signature_radio_button_wrapper")
         self.verify_signature_vlayout = QtWidgets.QVBoxLayout(self.verify_signature_radio_button_wrapper)
         self.verify_signature_vlayout.setContentsMargins(5, 5, 5, 5)
@@ -203,9 +222,9 @@ class SelectTaskPage(QtWidgets.QWizardPage):
         self.verify_signature.setObjectName("verify_signature")
         self.verify_signature_vlayout.addWidget(self.verify_signature)
         self.radio_buttons_hlayout.addWidget(self.verify_signature_radio_button_wrapper)
-        self.radio_button_group.addButton(self.verify_signature, 3)
+        self.radio_button_group.addButton(self.verify_signature, 4)
 
-        #AREA RECAP INFO
+        # AREA RECAP INFO
         self.acquisition_group_box = QtWidgets.QGroupBox(self)
         self.acquisition_group_box.setEnabled(True)
         self.acquisition_group_box.setGeometry(QtCore.QRect(130, 280, 501, 171))
@@ -230,9 +249,7 @@ class WizardView(QtWidgets.QWizard):
 
         self.width = 800
         self.height = 600
-        self.setObjectName("WizardView")  
-
-
+        self.setObjectName("WizardView")
 
     def init_wizard(self):
         self.setFixedSize(self.width, self.height)
@@ -243,43 +260,42 @@ class WizardView(QtWidgets.QWizard):
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint)
         self.setWindowIcon(QtGui.QIcon('asset/images/icon.png'))
 
-
         self.case_info_page = CaseInfoPage(self)
         self.select_task_page = SelectTaskPage(self)
 
         self.addPage(self.case_info_page)
         self.addPage(self.select_task_page)
 
-        self.button(QtWidgets.QWizard.NextButton).clicked.connect(lambda: self.select_task_page.recap_case_info.setHtml(self._get_recap_case_info_HTML()))
+        self.button(QtWidgets.QWizard.NextButton).clicked.connect(
+            lambda: self.select_task_page.recap_case_info.setHtml(self._get_recap_case_info_HTML()))
 
         self.button(QtWidgets.QWizard.FinishButton).clicked.connect(self._create_new_case)
 
         self.button(QtWidgets.QWizard.FinishButton).setDisabled(True)
 
-
         self.retranslateUi()
 
     def _create_new_case(self):
-        
+
         buttons = self.select_task_page.radio_button_group.buttons()
         selected_buttons_index = [buttons[x].isChecked() for x in range(len(buttons))].index(True)
         task = buttons[selected_buttons_index].objectName()
 
         case_id = None
-        #store information case on the local DB
+        # store information case on the local DB
         try:
-          case_id =  self.case_info_page.case_controller.save(self.case_info_page.case_info)
+            case_id = self.case_info_page.case_controller.save(self.case_info_page.case_info)
         except Exception as error:
             error_dlg = ErrorView(QtWidgets.QMessageBox.Warning,
-                            self.case_info_page.error_msg.TITLES['insert_update_case_info'],
-                            self.case_info_page.error_msg.MESSAGES['insert_update_case_info'],
-                            str(error)
-                            )
+                                  self.case_info_page.error_msg.TITLES['insert_update_case_info'],
+                                  self.case_info_page.error_msg.MESSAGES['insert_update_case_info'],
+                                  str(error)
+                                  )
 
             error_dlg.buttonClicked.connect(self.close)
             error_dlg.exec_()
 
-        #Send signal to main loop to start the acquisition window
+        # Send signal to main loop to start the acquisition window
         self.finished.emit(task, case_id)
 
     def retranslateUi(self):
@@ -288,14 +304,13 @@ class WizardView(QtWidgets.QWizard):
         self.select_task_page.acquisition_group_box.setTitle(_translate("FITWizard", "Riepilogo anagrafica caso"))
         self.select_task_page.web.setText(_translate("FITWizard", "WEB"))
         self.select_task_page.mail.setText(_translate("FITWizard", "MAIL"))
+        self.select_task_page.insta.setText(_translate("FITWizard", "INSTAGRAM"))
         self.select_task_page.fb.setText(_translate("FITWizard", "FACEBOOK"))
         self.select_task_page.verify_signature.setText(_translate("FITWizard", "VERIFY SIGNATURE"))
-
 
     def _get_recap_case_info_HTML(self):
 
         items = self.case_info_page.form.children()
-        
 
         html = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
         html += "<html>\n"
@@ -316,15 +331,14 @@ class WizardView(QtWidgets.QWizard):
                     value = next_item.currentText()
                 elif isinstance(next_item, QtWidgets.QLineEdit) is not False and next_item.text():
                     value = next_item.text()
-                #get info to store on the DB    
+                # get info to store on the DB
                 self.case_info_page.case_info[next_item.objectName()] = value
                 html += "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:19px;\">\n"
-                html += "<span style=\" font-family:\'Arial\',\'Courier New\',\'monospace\'; font-size:14px; font-weight:300; color:#000000;\">" + label  + ": </span>\n"
-                html += "<span style=\" font-size:14px; font-weight:600;  color:#000000;\">" + value  + "</span>\n"
+                html += "<span style=\" font-family:\'Arial\',\'Courier New\',\'monospace\'; font-size:14px; font-weight:300; color:#000000;\">" + label + ": </span>\n"
+                html += "<span style=\" font-size:14px; font-weight:600;  color:#000000;\">" + value + "</span>\n"
                 html += "</p>\n"
         html += "</body>\n"
         html += "</html>"
 
         return html
-        
-        
+
