@@ -40,6 +40,7 @@ import pyautogui
 import cv2
 import numpy as np
 import sys
+import PIL
 
 from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtWidgets import QMessageBox
