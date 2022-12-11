@@ -44,6 +44,7 @@ from view.wizard import WizardView
 from view.web import WebView
 from view.insta import InstaView
 from view.fb import FbView
+from view.yt import YtView
 from view.verifysignature import VerifySignatureView
 
 if __name__ == '__main__':
@@ -56,6 +57,8 @@ if __name__ == '__main__':
     insta.hide()
     fb = FbView()
     fb.hide()
+    yt = YtView()
+    yt.hide()
     verify_signature = VerifySignatureView()
     verify_signature.hide()
 
@@ -70,6 +73,8 @@ if __name__ == '__main__':
             acquisition_window = insta
         elif (task == 'fb'):
             acquisition_window = fb
+        elif (task == 'yt'):
+            acquisition_window = yt
         elif (task == 'verify_signature'):
             acquisition_window = verify_signature
 

@@ -205,6 +205,25 @@ class SelectTaskPage(QtWidgets.QWizardPage):
         self.radio_buttons_hlayout.addWidget(self.fb_radio_button_wrapper)
         self.radio_button_group.addButton(self.fb, 3)
 
+        # RADIO BUTTON YOUTUBE
+        self.yt_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
+        self.yt_radio_button_wrapper.setStyleSheet(
+            "QWidget#yt_radio_button_wrapper {\n""border: 1px solid #c3c3c3;\n""}")
+        self.insta_radio_button_wrapper.setObjectName("yt_radio_button_wrapper")
+        self.yt_vlayout = QtWidgets.QVBoxLayout(self.yt_radio_button_wrapper)
+        self.yt_vlayout.setContentsMargins(5, 5, 5, 5)
+        self.yt_vlayout.setObjectName("yt_vlayout")
+        self.yt_img = QtWidgets.QLabel(self.yt_radio_button_wrapper)
+        self.yt_img.setStyleSheet("image: url(asset/images/wizard/yt.png);")
+        self.yt_img.setText("")
+        self.yt_img.setObjectName("yt_img")
+        self.yt_vlayout.addWidget(self.yt_img)
+        self.yt = QtWidgets.QRadioButton(self.yt_radio_button_wrapper)
+        self.yt.setObjectName("yt")
+        self.yt_vlayout.addWidget(self.yt)
+        self.radio_buttons_hlayout.addWidget(self.yt_radio_button_wrapper)
+        self.radio_button_group.addButton(self.yt, 4)
+
         # RADIO BUTTON CHECK SIGNATURE
         self.verify_signature_radio_button_wrapper = QtWidgets.QWidget(self.radio_button_container)
         self.verify_signature_radio_button_wrapper.setStyleSheet(
@@ -222,7 +241,7 @@ class SelectTaskPage(QtWidgets.QWizardPage):
         self.verify_signature.setObjectName("verify_signature")
         self.verify_signature_vlayout.addWidget(self.verify_signature)
         self.radio_buttons_hlayout.addWidget(self.verify_signature_radio_button_wrapper)
-        self.radio_button_group.addButton(self.verify_signature, 4)
+        self.radio_button_group.addButton(self.verify_signature, 5)
 
         # AREA RECAP INFO
         self.acquisition_group_box = QtWidgets.QGroupBox(self)
@@ -306,6 +325,7 @@ class WizardView(QtWidgets.QWizard):
         self.select_task_page.mail.setText(_translate("FITWizard", "MAIL"))
         self.select_task_page.insta.setText(_translate("FITWizard", "INSTAGRAM"))
         self.select_task_page.fb.setText(_translate("FITWizard", "FACEBOOK"))
+        self.select_task_page.fb.setText(_translate("FITWizard", "YOUTUBE"))
         self.select_task_page.verify_signature.setText(_translate("FITWizard", "VERIFY SIGNATURE"))
 
     def _get_recap_case_info_HTML(self):
