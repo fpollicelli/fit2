@@ -41,6 +41,8 @@ import sys
 import json
 import logging
 import logging.config
+import re
+import view.instascraper as instascraper
 
 # I don't know why but pywebcopy "original" (by Raja Tomar) hangs the console and does not exit.
 # If I understood correctly this issue is known (https://github.com/rajatomar788/pywebcopy/issues/46)
@@ -70,6 +72,7 @@ import common.utility as utility
 
 logger_acquisition = logging.getLogger(__name__)
 logger_hashreport = logging.getLogger('hashreport')
+
 
 
 class Screenshot(QtWebEngineWidgets.QWebEngineView):
@@ -312,6 +315,12 @@ class InstaView(QtWidgets.QMainWindow):
             self.status.showMessage('Logging handler and login information have been started')
             self.progress_bar.setValue(50)
 
+            # TODO: https://www.instagram.com/mrcharlie_the_poodle/
+            currenturl = self.tabs.currentWidget().url().toString()
+            user = re.search(r'https://www.instagram.com/([^/?]+)', currenturl).group(1)
+            instascraper.postScraper(user, self.acquisition_directory)
+
+            '''
             # Step 4: Add new thread for network packet capture and start it
             options = json.loads(self.config['packet_capture_options'])
             self.is_enabled_packet_capture = bool(options['enabled'])
@@ -340,6 +349,7 @@ class InstaView(QtWidgets.QMainWindow):
                 logger_acquisition.info('Screen recoder started')
                 logger_acquisition.info('Initial URL: ' + self.tabs.currentWidget().url().toString())
                 self.acquisition_status.set_title('Acquisition started success:')
+            '''
 
             # hidden progress bar
             self.progress_bar.setHidden(True)
@@ -357,6 +367,8 @@ class InstaView(QtWidgets.QMainWindow):
             logger_acquisition.info('Acquisition stopped')
             logger_acquisition.info('End URL: ' + self.tabs.currentWidget().url().toString())
             self.statusBar().showMessage('Message in statusbar.')
+
+            '''
             # Step 2: stop threads
             if self.is_enabled_packet_capture:
                 self.packetcapture.stop()
@@ -385,7 +397,7 @@ class InstaView(QtWidgets.QMainWindow):
             logger_acquisition.info('Save all resource of current page')
             self.acquisition_status.add_task('Save Page')
             self.acquisition_status.set_status('Save Page', zip_folder, 'done')
-
+            '''
             ### Waiting everything is synchronized
             loop = QtCore.QEventLoop()
             QtCore.QTimer.singleShot(2000, loop.quit)
