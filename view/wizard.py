@@ -325,7 +325,7 @@ class WizardView(QtWidgets.QWizard):
         self.select_task_page.mail.setText(_translate("FITWizard", "MAIL"))
         self.select_task_page.insta.setText(_translate("FITWizard", "INSTAGRAM"))
         self.select_task_page.fb.setText(_translate("FITWizard", "FACEBOOK"))
-        self.select_task_page.fb.setText(_translate("FITWizard", "YOUTUBE"))
+        self.select_task_page.yt.setText(_translate("FITWizard", "YOUTUBE"))
         self.select_task_page.verify_signature.setText(_translate("FITWizard", "VERIFY SIGNATURE"))
 
     def _get_recap_case_info_HTML(self):

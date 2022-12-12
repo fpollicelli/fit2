@@ -41,6 +41,7 @@ import sys
 import json
 import logging
 import logging.config
+import view.videodownload as videodownload
 
 # I don't know why but pywebcopy "original" (by Raja Tomar) hangs the console and does not exit.
 # If I understood correctly this issue is known (https://github.com/rajatomar788/pywebcopy/issues/46)
@@ -303,6 +304,8 @@ class YtView(QtWidgets.QMainWindow):
             self.status.showMessage(self.acquisition_directory)
             self.progress_bar.setValue(25)
 
+            videodownload.videoScraper(self.tabs.currentWidget().url().toString(),self.acquisition_directory)
+            '''
             # Step 3: Create loggin handler and start loggin information
             self.log_confing.change_filehandlers_path(self.acquisition_directory)
             logging.config.dictConfig(self.log_confing.config)
@@ -340,10 +343,11 @@ class YtView(QtWidgets.QMainWindow):
                 logger_acquisition.info('Screen recoder started')
                 logger_acquisition.info('Initial URL: ' + self.tabs.currentWidget().url().toString())
                 self.acquisition_status.set_title('Acquisition started success:')
-
+            '''
             # hidden progress bar
             self.progress_bar.setHidden(True)
             self.status.showMessage('')
+
 
     def stop_acquisition(self):
 
