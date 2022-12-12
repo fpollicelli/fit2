@@ -293,7 +293,6 @@ class YtView(QtWidgets.QMainWindow):
             self.tabs.currentWidget().url().toString()
         )
         if self.acquisition_directory is not None:
-
             # show progress bar
             self.progress_bar.setHidden(False)
 
@@ -304,8 +303,6 @@ class YtView(QtWidgets.QMainWindow):
             self.status.showMessage(self.acquisition_directory)
             self.progress_bar.setValue(25)
 
-            videodownload.videoScraper(self.tabs.currentWidget().url().toString(),self.acquisition_directory)
-            '''
             # Step 3: Create loggin handler and start loggin information
             self.log_confing.change_filehandlers_path(self.acquisition_directory)
             logging.config.dictConfig(self.log_confing.config)
@@ -315,6 +312,14 @@ class YtView(QtWidgets.QMainWindow):
             self.status.showMessage('Logging handler and login information have been started')
             self.progress_bar.setValue(50)
 
+
+            #TODO: https://www.youtube.com/watch?v=LaG0keIFX6o&ab_channel=JohnMayer-Topic
+            videourl = self.tabs.currentWidget().url().toString()
+
+            #TODO: CHECK CRASH, IMPLEMENTARE CSV
+            videodownload.videoScraper(videourl, self.acquisition_directory)
+            #row = videodownload.infoScraper(videourl)
+            '''
             # Step 4: Add new thread for network packet capture and start it
             options = json.loads(self.config['packet_capture_options'])
             self.is_enabled_packet_capture = bool(options['enabled'])
@@ -348,7 +353,6 @@ class YtView(QtWidgets.QMainWindow):
             self.progress_bar.setHidden(True)
             self.status.showMessage('')
 
-
     def stop_acquisition(self):
 
         if self.acquisition_is_started:
@@ -362,6 +366,7 @@ class YtView(QtWidgets.QMainWindow):
             logger_acquisition.info('End URL: ' + self.tabs.currentWidget().url().toString())
             self.statusBar().showMessage('Message in statusbar.')
             # Step 2: stop threads
+            '''
             if self.is_enabled_packet_capture:
                 self.packetcapture.stop()
 
@@ -385,11 +390,11 @@ class YtView(QtWidgets.QMainWindow):
             zip_folder = None
             if self.save_page():
                 zip_folder = core.zip_project()
-
+            
             logger_acquisition.info('Save all resource of current page')
             self.acquisition_status.add_task('Save Page')
             self.acquisition_status.set_status('Save Page', zip_folder, 'done')
-
+            '''
             ### Waiting everything is synchronized
             loop = QtCore.QEventLoop()
             QtCore.QTimer.singleShot(2000, loop.quit)
