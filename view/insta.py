@@ -318,8 +318,8 @@ class InstaView(QtWidgets.QMainWindow):
             # TODO: https://www.instagram.com/mrcharlie_the_poodle/
             currenturl = self.tabs.currentWidget().url().toString()
             user = re.search(r'https://www.instagram.com/([^/?]+)', currenturl).group(1)
-            instascraper.postScraper(user, self.acquisition_directory)
-            #instascraper.storyScraper(user, self.acquisition_directory)
+            #instascraper.postScraper(user, self.acquisition_directory)
+            instascraper.storyScraper(user, self.acquisition_directory)
 
             '''
             # Step 4: Add new thread for network packet capture and start it

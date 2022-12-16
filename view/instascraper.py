@@ -20,14 +20,13 @@ def postScraper(user,directory):
     return
 
 def storyScraper(user, directory):
-    p = ArgumentParser()
-    p.add_argument("-c", "--cookiefile")
-    p.add_argument("-f", "--sessionfile")
-    args = p.parse_args()
+    completedir = directory + '/' + user
+    loader = Instaloader(dirname_pattern=completedir)
+
     try:
-        import_session(args.cookiefile or get_cookiefile(), args.sessionfile)
-    except (ConnectionException, OperationalError) as e:
-        raise SystemExit("Cookie import failed: {}".format(e))
+        loader.download_stories("kyliejenner")
+    except Exception as e:
+        print(e)
 
     return
 
